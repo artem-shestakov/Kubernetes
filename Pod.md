@@ -248,3 +248,28 @@ kubectl delete pods --all
 # Delete all in all
 k delete all --all
 ```
+
+## Pod probes
+### Liveness probe
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  containers:
+    - image: nginx:1.22
+      name: nginx
+      ports:
+        - containerPort: 80
+          protocol: TCP
+      livenessProbe:
+        initialDelaySeconds: 5
+        periodSeconds: 30
+        failureThreshold: 3
+        httpGet:
+          path: /
+          port: 80
+```
