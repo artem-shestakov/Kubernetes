@@ -59,3 +59,25 @@ k scale job batch-job --replicas 10
 spec:
   activeDeadlineSeconds: 10
 ```
+
+## Scheduling Job (CronJob)
+### CronJob example
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: every-30-minutes
+spec:
+  schedule: "*/30 * * * *"
+  startingDeadlineSeconds: 30
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: cron-job
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: ubuntu
+```
