@@ -70,6 +70,53 @@ k get svc nginx-nodeport
 NAME             TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)       AGE
 nginx-nodeport   NodePort   10.105.208.4   <none>        80:1080/TCP   43s
 ```
+### Network hops
+Prevent trafic hop between node and send to local pod
+```yaml
+...
+spec:
+  externalTrafficPolicy: Local
+...
+```
+
+## LoadBalancer service
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: load-balancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+    - port: 8080
+      targetPort: 80
+```
+```shell
+k get svc load-balancer     
+NAME            TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+load-balancer   LoadBalancer   10.107.183.214   130.199.173.10     8080:29313/TCP   49m
+
+k describe svc load-balancer 
+Name:                     load-balancer
+Namespace:                default
+Labels:                   <none>
+Annotations:              <none>
+Selector:                 app=nginx
+Type:                     LoadBalancer
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.107.183.214
+IPs:                      10.107.183.214
+Port:                     <unset>  8080/TCP
+TargetPort:               80/TCP
+NodePort:                 <unset>  29313/TCP
+Endpoints:                192.168.140.79:80,192.168.186.215:80,192.168.196.151:80
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+```
 
 ## ExternalName service
 ```yaml
