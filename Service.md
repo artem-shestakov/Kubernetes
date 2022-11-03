@@ -157,3 +157,38 @@ The document has moved
 </BODY></HTML>
 ```
 >ExternalName does not use Cluster IP. It creates CNAME to communicate with external service.
+
+## Headless service
+>Specifying `None` for the cluster IP (`.spec.clusterIP`)
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-headless
+spec:
+  clusterIP: None
+  selector:
+    app: nginx
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 443
+```
+Use DNS util to get IP addresses of pods:
+```shell
+nslookup nginx-headless
+Server:         10.96.0.10
+Address:        10.96.0.10#53
+
+Name:   nginx-headless.default.svc.cluster.local
+Address: 192.168.140.97
+Name:   nginx-headless.default.svc.cluster.local
+Address: 192.168.196.164
+Name:   nginx-headless.default.svc.cluster.local
+Address: 192.168.186.234
+```
