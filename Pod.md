@@ -250,6 +250,8 @@ k delete all --all
 ```
 
 ## Pod probes
+### Readiness probe
+
 ### Liveness probe
 ```yaml
 apiVersion: v1
