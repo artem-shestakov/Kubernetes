@@ -56,6 +56,14 @@ spec:
 
 ## Rolling update strategy
 * RollingUpdate
+```yaml
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+```
 * Recreate
 
 ## Rolling update
@@ -73,4 +81,18 @@ REVISION  CHANGE-CAUSE
 
 k rollout undo deployment nginx --to-revision 2
 deployment.apps/nginx rolled back
+```
+>Use `revisionHistoryLimit` param to set history limit
+
+## Pause rolling
+```shell
+#  Pause
+k rollout pause deployment nginx 
+
+# Get status
+k rollout status deployment nginx  
+Waiting for deployment "nginx" rollout to finish: 2 out of 10 new replicas have been updated...
+
+# Resume
+k rollout resume deployment nginx
 ```
